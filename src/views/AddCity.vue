@@ -13,10 +13,6 @@ export default {
   components: { City },
   name: "AddCity",
   props: ["cities"],
-
-  created() {
-    console.log(this.cities);
-  },
 };
 </script>
 <style lang="scss" scoped>
@@ -26,6 +22,7 @@ export default {
   background-color: #31363d;
   width: 100%;
   min-height: 100vh;
+  grid-auto-rows: 250px;
   @media (min-width: 400px) {
     grid-template-columns: repeat(2, 1fr);
   }

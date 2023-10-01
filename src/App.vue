@@ -1,7 +1,12 @@
 <template>
   <div class="main">
-    <Navigation />
-    <router-view :cities="cities"/>
+    <Modal
+      v-if="modalOpen"
+      @closeModal="modalOpen = !modalOpen"
+      :APIKey="APIKey"
+    />
+    <Navigation @openModal="modalOpen = !modalOpen" />
+    <router-view :cities="cities" />
   </div>
 </template>
 
@@ -10,18 +15,22 @@ import axios from "axios";
 import db from "@/firebase/firebaseInit.js";
 import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import Navigation from "./components/Navigation.vue";
+import Modal from "./components/Modal.vue";
 
 export default {
   name: "App",
-  components: { Navigation },
+  components: { Navigation, Modal },
   data() {
     return {
       APIKey: "af5906b85436dc10c0b8e86246901447",
       cities: [],
+      modalOpen: false,
+      isLoading: false,
     };
   },
   methods: {
     async getCurrentWeather() {
+      this.isLoading = true;
       const citiesCollection = collection(db, "latLon");
 
       onSnapshot(citiesCollection, (snapshot) => {
@@ -50,6 +59,8 @@ export default {
           }
         });
       });
+
+      this.isLoading = false;
     },
   },
 
