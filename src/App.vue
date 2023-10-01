@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <div class="main">
+    <Navigation class="navigation" />
     <router-view />
-    {{ cities }}
   </div>
 </template>
 
@@ -9,9 +9,11 @@
 import axios from "axios";
 import db from "@/firebase/firebaseInit.js";
 import { collection, onSnapshot, doc, updateDoc } from "firebase/firestore";
+import Navigation from "./components/Navigation.vue";
 
 export default {
   name: "App",
+  components: { Navigation },
   data() {
     return {
       APIKey: "af5906b85436dc10c0b8e86246901447",
@@ -64,10 +66,26 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Quicksand", sans-serif;
+}
+
+.main {
+  height: 100vh;
+  .navigation {
+    z-index: 99;
+    position: fixed;
+    max-width: 1024px;
+    width: 100%;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  .container{
+    padding: 0 20px;
+  }
 }
 </style>
