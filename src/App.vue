@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <Navigation class="navigation" />
-    <router-view />
+    <Navigation />
+    <router-view :cities="cities"/>
   </div>
 </template>
 
@@ -21,7 +21,7 @@ export default {
     };
   },
   methods: {
-    async getCitys() {
+    async getCurrentWeather() {
       const citiesCollection = collection(db, "latLon");
 
       onSnapshot(citiesCollection, (snapshot) => {
@@ -51,16 +51,10 @@ export default {
         });
       });
     },
-
-    getCurrentWeather() {
-      axios.get(
-        `https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&exclude={part}&appid={API key}`
-      );
-    },
   },
 
   created() {
-    this.getCitys();
+    this.getCurrentWeather();
   },
 };
 </script>
@@ -74,17 +68,11 @@ export default {
 }
 
 .main {
+  max-width: 1024px;
+  margin: 0 auto;
   height: 100vh;
-  .navigation {
-    z-index: 99;
-    position: fixed;
-    max-width: 1024px;
-    width: 100%;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-      0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
 
-  .container{
+  .container {
     padding: 0 20px;
   }
 }
