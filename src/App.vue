@@ -3,10 +3,14 @@
     <Modal
       v-if="modalOpen"
       @closeModal="modalOpen = !modalOpen"
+      @setNewCity="newAdd = $event"
       :APIKey="APIKey"
     />
-    <Navigation @openModal="modalOpen = !modalOpen" />
-    <router-view :cities="cities" />
+    <Navigation
+      @openModal="modalOpen = !modalOpen"
+      @toggleEdit="edit = !edit"
+    />
+    <router-view :cities="cities" :edit="edit" />
   </div>
 </template>
 
@@ -26,6 +30,8 @@ export default {
       cities: [],
       modalOpen: false,
       isLoading: false,
+      newAdd: false,
+      edit: false,
     };
   },
   methods: {
@@ -56,6 +62,12 @@ export default {
             } catch (error) {
               console.log(error);
             }
+          }
+
+          if (change.type === "removed") {
+            this.cities = this.cities.filter((city) => {
+              return city.city !== change.doc.data().city;
+            });
           }
         });
       });

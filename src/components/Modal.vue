@@ -34,6 +34,7 @@ export default {
     },
 
     async addCity() {
+      this.$emit("setNewCity", true);
       if (this.city === "") {
         alert("Field cannot be empty");
       } else {
@@ -64,6 +65,7 @@ export default {
           lon: lon,
         }).then(() => {
           this.$emit("closeModal");
+          this.$emit("setNewCity", false);
         });
       }
     },

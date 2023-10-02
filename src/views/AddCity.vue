@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
     <div v-for="(city, index) in cities" :key="index" class="city-link">
-      <City :city="city"/>
+      <City :city="city" :edit="edit" />
     </div>
   </div>
 </template>
@@ -12,7 +12,7 @@ import City from "@/components/City.vue";
 export default {
   components: { City },
   name: "AddCity",
-  props: ["cities"],
+  props: ["cities", "edit"],
 };
 </script>
 <style lang="scss" scoped>
