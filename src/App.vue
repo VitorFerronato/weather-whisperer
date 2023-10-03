@@ -9,8 +9,18 @@
     <Navigation
       @openModal="modalOpen = !modalOpen"
       @toggleEdit="edit = !edit"
+      :addCityActive="addCityActive"
+      :isDay="isDay"
+      :isNight="isNight"
     />
-    <router-view :cities="cities" :edit="edit" :APIKey="APIKey" />
+    <router-view
+      :cities="cities"
+      :edit="edit"
+      :APIKey="APIKey"
+      @is-day="isDay = !isDay"
+      @is-night="isNight = !isNight"
+      @resetDays="resetDays"
+    />
   </div>
 </template>
 
@@ -32,7 +42,16 @@ export default {
       isLoading: false,
       newAdd: false,
       edit: false,
+      addCityActive: false,
+      isDay: null,
+      isNight: null,
     };
+  },
+
+  watch: {
+    $route() {
+      this.checkRoute();
+    },
   },
   methods: {
     async getCurrentWeather() {
@@ -74,10 +93,19 @@ export default {
 
       this.isLoading = false;
     },
+    checkRoute() {
+      if (this.$route.name === "AddCity") this.addCityActive = true;
+      else this.addCityActive = false;
+    },
+    resetDays() {
+      this.isDay = false;
+      this.isNight = false;
+    },
   },
 
   created() {
     this.getCurrentWeather();
+    this.checkRoute();
   },
 };
 </script>

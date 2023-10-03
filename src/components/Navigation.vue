@@ -1,19 +1,37 @@
 <template>
-  <header class="container add-city">
-    <nav>
-      <span>Add City</span>
-      <div class="right">
-        <i @click="toggleEdit" ref="editCities" class="far fa-edit"></i>
-        <i @click="reloadApp" class="fas fa-sync"></i>
-        <i @click="addCity" class="fas fa-plus"></i>
-      </div>
-    </nav>
-  </header>
+  <div>
+    <header v-if="addCityActive" class="container add-city">
+      <nav>
+        <span>Add City</span>
+        <div class="right">
+          <i @click="toggleEdit" ref="editCities" class="far fa-edit"></i>
+          <i @click="reloadApp" class="fas fa-sync"></i>
+          <i @click="addCity" class="fas fa-plus"></i>
+        </div>
+      </nav>
+    </header>
+
+    <header class="container" :class="{ day: isDay, night: isNight }" v-else>
+      <nav>
+        <router-link :to="{ name: 'AddCity' }" class="router-link">
+          <i class="fas fa-plus"></i>
+        </router-link>
+        <span>
+          {{ new Date().toLocaleString("en-us", { weekday: "short" }) }},
+          {{ new Date().toLocaleString("en-us", { month: "short" }) }},
+          {{ new Date().toLocaleString("en-us", { day: "2-digit" }) }},
+        </span>
+
+        <span> &deg; F </span>
+      </nav>
+    </header>
+  </div>
 </template>
 
 <script>
 export default {
   name: "NavigationComp",
+  props: ["addCityActive", "isDay", "isNight"],
   data() {
     return {};
   },
@@ -36,6 +54,17 @@ export default {
 .add-city {
   background-color: #313640;
 }
+
+.day {
+  transition: 500ms ease all;
+  background-color: rgb(59, 150, 249);
+}
+
+.night {
+  transition: 500ms ease all;
+  background-color: rgb(20, 42, 95);
+}
+
 header {
   z-index: 99;
   position: fixed;
@@ -51,6 +80,10 @@ header {
     justify-content: space-between;
     .edit-active {
       color: rgba(210, 75, 75, 1);
+    }
+
+    .router-link {
+      color: #fff;
     }
 
     .right {

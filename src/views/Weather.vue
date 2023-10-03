@@ -17,6 +17,7 @@ export default {
     return {
       forecast: null,
       currentWeather: null,
+      currentTime: false,
       loading: true,
     };
   },
@@ -32,14 +33,36 @@ export default {
 
       querySnap.forEach((doc) => {
         this.currentWeather = doc.data().currentWeather;
-        // const lat = doc.data().lat;
-        // const lon = doc.data().lon;
       });
+
+      this.getCurrentTime();
+    },
+
+    getCurrentTime() {
+      const dateObjetct = new Date();
+      this.currentTime = dateObjetct.getHours();
+
+      const sunrise = new Date(
+        this.currentWeather.sys.sunrise * 1000
+      ).getHours();
+
+      const sunset = new Date(this.currentWeather.sys.sunset * 1000).getHours();
+
+      if (this.currentTime > sunrise && this.currentTime < sunset) {
+        this.$emit("is-day");
+        console.log("dia");
+      } else {
+        this.$emit("is-night");
+        console.log("noite");
+      }
     },
   },
 
   created() {
     this.getWeather();
+  },
+  beforeDestroy() {
+    this.$emit("resetDays");
   },
 };
 </script>
