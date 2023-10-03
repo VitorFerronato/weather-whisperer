@@ -1,5 +1,5 @@
 <template>
-  <div class="city">
+  <div @click="gotoWeather" class="city">
     <i
       @click="removeCity"
       v-show="edit"
@@ -63,6 +63,17 @@ export default {
       });
 
       await deleteDoc(doc(db, "latLon", this.id));
+    },
+
+    gotoWeather(e) {
+      if (e.target === this.$refs.edit) {
+        //
+      } else {
+        this.$router.push({
+          name: "WeatherView",
+          params: { city: this.city.city },
+        });
+      }
     },
   },
 };

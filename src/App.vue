@@ -10,7 +10,7 @@
       @openModal="modalOpen = !modalOpen"
       @toggleEdit="edit = !edit"
     />
-    <router-view :cities="cities" :edit="edit" />
+    <router-view :cities="cities" :edit="edit" :APIKey="APIKey" />
   </div>
 </template>
 
